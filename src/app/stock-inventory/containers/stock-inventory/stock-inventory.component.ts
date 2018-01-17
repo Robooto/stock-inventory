@@ -33,6 +33,16 @@ import { Product, Item } from '../../models/product.interface';
           (removed)="removeStock($event)">
         </stock-products>
 
+        <stock-upload
+          (filesChangeEmiter)="filesChanged($event)">
+        </stock-upload>
+
+        <stock-files
+          [parent]="form"
+          [fileList]="files"
+          (removed)="removeFiles($event)">
+        </stock-files>
+
         <div class="stock-inventory__price">
           Total: {{ total | currency:'USD':true }}
         </div>
@@ -57,6 +67,8 @@ export class StockInventoryComponent implements OnInit {
 
   total: number;
 
+  files: Array<File> = [];
+
   productMap: Map<number, Product>;
 
   form = this.fb.group({
@@ -69,7 +81,8 @@ export class StockInventoryComponent implements OnInit {
       code: ['', Validators.required]
     }),
     selector: this.createStock({}),
-    stock: this.fb.array([])
+    stock: this.fb.array([]),
+    files: this.fb.array([])
   }, { validator: StockValidators.checkStockExists });
 
   constructor(
@@ -128,6 +141,28 @@ export class StockInventoryComponent implements OnInit {
   removeStock({ group, index }: { group: FormGroup, index: number }) {
     const control = this.form.get('stock') as FormArray;
     control.removeAt(index);
+  }
+
+  removeFiles({ group, index }: { group: FormGroup, index: number }) {
+    const control = this.form.get('files') as FormArray;
+    // remove from file object
+    this.files.splice(index, 1);
+    control.removeAt(index);
+    console.log(this.files);
+  }
+
+  filesChanged($event: Array<File>) {
+    console.log($event);
+    const control = this.form.get('files') as FormArray;
+    $event.forEach(file => {
+      this.files.push(file);
+      control.push(this.fb.group({
+        name: file.name,
+        type: file.type})
+      );
+    })
+
+    console.log(this.files);
   }
 
   onSubmit() {

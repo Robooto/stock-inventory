@@ -10,6 +10,8 @@ import { StockProductsComponent } from './components/stock-products/stock-produc
 import { StockSelectorComponent } from './components/stock-selector/stock-selector.component';
 import { StockCounterComponent } from './components/stock-counter/stock-counter.component';
 import { StockInventoryService } from './services/stock-inventory.service';
+import { StockFilesComponent } from './components/stock-files/stock-files.component';
+import { StockUploadComponent } from './components/stock-upload/stock-upload.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { StockInventoryService } from './services/stock-inventory.service';
     StockBranchComponent,
     StockProductsComponent,
     StockSelectorComponent,
-    StockCounterComponent
+    StockCounterComponent,
+    StockFilesComponent,
+    StockUploadComponent
   ],
   providers: [
     StockInventoryService
